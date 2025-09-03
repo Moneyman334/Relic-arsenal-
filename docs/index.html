@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relic Arsenal</title>
+    <style>
+        :root{
+            /* dark (default) */
+            --bg:#0a0a0a; --panel:#111219; --ink:#E8E8FF; --muted:#b9b9d4;
+            --gold:#FFD700; --violet:#6f46ff; --cyan:#29e3ff; --ring:rgba(255,215,0,.2)
+        }
+        :root[data-theme="violet"]{
+            --bg:#0a0714; --panel:#120f24; --ink:#efe7ff; --muted:#cdbffd;
+            --gold:#FFD700; --violet:#8e64ff; --cyan:#7ad7ff; --ring:rgba(142,100,255,.25);
+        }
+        :root[data-theme="cyan"]{
+            --bg:#051216; --panel:#0a1b22; --ink:#e6fbff; --muted:#bfe7f1;
+            --gold:#FFD700; --violet:#6f46ff; --cyan:#29e3ff; --ring:rgba(41,227,255,.25);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--ink);
+            font-family: Arial, sans-serif;
+        }
+        
+        header {
+            background-color: var(--panel);
+            padding: 20px;
+            border-bottom: 1px solid var(--ring);
+        }
+        
+        .sub {
+            margin-bottom: 10px;
+            color: var(--muted);
+        }
+        
+        .banner {
+            background-color: var(--panel);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--ring);
+        }
+        
+        .banner h1 {
+            color: var(--gold);
+            margin: 0 0 20px 0;
+            font-size: 2.5em;
+        }
+        
+        main {
+            padding: 20px;
+        }
+        
+        button {
+            background-color: var(--violet);
+            color: var(--ink);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            opacity: 0.8;
+        }
+        
+        #countdown {
+            font-size: 1.2em;
+            color: var(--cyan);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="sub">ChaosKey333: Relic assets, scrolls, and starter bundles</div>
+        <button id="themeBtn">Theme: Dark</button>
+    </header>
+    
+    <section class="banner">
+        <h1>Relic Arsenal</h1>
+        <p>Your gateway to legendary artifacts and mystical powers</p>
+        <div id="countdown"></div>
+    </section>
+    
+    <main>
+        <h2>Welcome to Relic Arsenal</h2>
+        <p>Discover powerful relics, ancient scrolls, and essential starter bundles to begin your journey.</p>
+    </main>
+    
+    <script>
+        // ===== Countdown Config =====
+        const DROP_AT = new Date("2025-10-01T20:00:00Z");
+        function fmt(n) { return n.toString().padStart(2, '0'); }
+        function tickCountdown() {
+            const now = new Date();
+            const diff = DROP_AT - now;
+            const countdown = document.getElementById("countdown");
+            if (!countdown) return;
+            
+            if (diff <= 0) {
+                countdown.textContent = "Drop is LIVE ⚡";
+                return;
+            }
+            
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            countdown.textContent = `Next drop in — ${d}d ${fmt(h)}:${fmt(m)}:${fmt(s)}`;
+        }
+        tickCountdown(); 
+        setInterval(tickCountdown, 1000);
+        
+        // ===== Theme Switcher =====
+        const THEMES = ["dark","violet","cyan"];
+        const key = "ck333.theme";
+        function applyTheme(t){ document.documentElement.dataset.theme = t==="dark"?"":t; }
+        const saved = localStorage.getItem(key) || "dark"; applyTheme(saved);
+        const btn = document.getElementById("themeBtn");
+        if(btn){ btn.textContent = `Theme: ${saved[0].toUpperCase()+saved.slice(1)}`;
+            btn.onclick = () => {
+                const cur = document.documentElement.dataset.theme || "dark";
+                const idx = THEMES.indexOf(cur); const next = THEMES[(idx+1)%THEMES.length];
+                applyTheme(next); localStorage.setItem(key, next);
+                btn.textContent = `Theme: ${next[0].toUpperCase()+next.slice(1)}`;
+            };
+        }
+    </script>
+</body>
+</html>
